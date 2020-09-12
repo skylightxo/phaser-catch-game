@@ -3,11 +3,12 @@ import { WelcomeScene } from "./welcomeScene";
 import { GameScene } from "./gameScene";
 import { ScoreScene } from "./scoreScene";
 
-const config: GameConfig = {
+const config = {
   title: "Ivan catches watermelons",
   width: 800,
   height: 600,
   parent: "game",
+  pixelArt: true,
   scene: [WelcomeScene, GameScene, ScoreScene],
   physics: {
     default: "arcade",
@@ -18,12 +19,12 @@ const config: GameConfig = {
   backgroundColor: "#18216D",
 };
 
-export class StarfallGame extends Phaser.Game {
-  constructor(config: GameConfig) {
+export class WatermelonCatch extends Phaser.Game {
+  constructor(config) {
     super(config);
   }
 }
 
 window.onload = () => {
-  var game = new StarfallGame(config);
+  var game = new WatermelonCatch(config);
 };
