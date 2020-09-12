@@ -2,12 +2,26 @@
 <html>
   <head>
     <title>Watermelons catch</title>
-    <style>
-      @import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
-    </style>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="/assets/watermelon.png" />
     <script src="dist/app.js"></script>
   </head>
   <body>
-    <div id="game"></div>
+    <h1>Ivan catches watermelons</h1>
+    <div class="container">
+      <div id="game"></div>
+      <div class="controls-container">
+        <p>Controls:</p>
+        <div class="controls">
+          <div>
+            <p><span class="keyboard-btn">→</span> right</p>
+            <p><span class="keyboard-btn">←</span> left</p>
+          </div>
+          <div>
+            <p><span class="keyboard-btn">Shift</span> dodge objects</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

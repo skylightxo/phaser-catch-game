@@ -16,6 +16,8 @@ export class GameScene extends Phaser.Scene {
   arrow: Phaser.Input.Keyboard.CursorKeys;
   shift: Phaser.Input.Keyboard.Key;
   info: Phaser.GameObjects.Text;
+  highscoreText: Phaser.GameObjects.Text;
+  highscore: number | string;
 
   constructor() {
     super({
@@ -61,9 +63,15 @@ export class GameScene extends Phaser.Scene {
       new Phaser.Geom.Line(20, 580, 820, 580)
     );
     this.sand.refresh();
-    console.log(this.sand);
+
+    this.highscore = localStorage.getItem("highscore") || 0;
 
     this.info = this.add.text(10, 10, "", {
+      font: "24px Arial Bold",
+      fill: "#FBFBAC",
+    });
+
+    this.highscoreText = this.add.text(660, 10, "", {
       font: "24px Arial Bold",
       fill: "#FBFBAC",
     });
@@ -100,6 +108,8 @@ export class GameScene extends Phaser.Scene {
     }
     this.info.text =
       this.melonsCaught + " caught - " + this.melonsFallen + " fallen (max 3)";
+
+    this.highscoreText.text = "highscore: " + this.highscore.toString();
   }
 
   private onCatch(watermelon: Phaser.Physics.Arcade.Image): () => void {
@@ -114,12 +124,19 @@ export class GameScene extends Phaser.Scene {
         5,
         function (watermelon) {
           watermelon.destroy();
-          console.log(watermelon);
         },
         [watermelon],
         this
       );
     };
+  }
+
+  protected gameOver(): () => void {
+    if (this.highscore < this.melonsCaught)
+      localStorage.setItem("highscore", this.melonsCaught.toString());
+    this.scene.start("ScoreScene", {
+      melonsCaught: this.melonsCaught,
+    });
   }
 
   private onFall(watermelon: Phaser.Physics.Arcade.Image): () => void {
@@ -132,9 +149,7 @@ export class GameScene extends Phaser.Scene {
           watermelon.destroy();
           if (this.melonsFallen > 2) {
             this.music.stop();
-            this.scene.start("ScoreScene", {
-              melonsCaught: this.melonsCaught,
-            });
+            this.gameOver();
           }
         },
         [watermelon],
@@ -151,9 +166,7 @@ export class GameScene extends Phaser.Scene {
       this.ivan.setFlipY(true);
       this.time.delayedCall(500, () => {
         this.music.stop();
-        this.scene.start("ScoreScene", {
-          melonsCaught: this.melonsCaught,
-        });
+        this.gameOver();
       });
     };
   }
